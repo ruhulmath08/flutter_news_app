@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_news_app/config/routes/routes.dart';
 import 'package:flutter_news_app/config/theme/app_themes.dart';
 import 'package:flutter_news_app/features/daily_news/presentation/bloc/remote/remote_articles_bloc.dart';
-import 'package:flutter_news_app/features/daily_news/presentation/pages/article_page.dart';
+import 'package:flutter_news_app/features/daily_news/presentation/pages/article/article_page.dart';
 import 'package:flutter_news_app/injection_container.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await initializeDependencies();
   runApp(const MyApp());
 }
@@ -28,6 +30,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: them(),
+        onGenerateRoute: AppRoutes.onGenerateRoutes,
         home: const ArticlePage(),
       ),
     );

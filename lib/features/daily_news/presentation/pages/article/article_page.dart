@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_news_app/features/daily_news/domain/entities/article_entity.dart';
 import 'package:flutter_news_app/features/daily_news/presentation/bloc/remote/remote_articles_bloc.dart';
-import 'package:flutter_news_app/features/daily_news/presentation/widgets/article_tile.dart';
+import 'package:flutter_news_app/features/daily_news/presentation/pages/article/widgets/article_tile.dart';
 
 class ArticlePage extends StatelessWidget {
   const ArticlePage({super.key});
@@ -9,12 +10,12 @@ class ArticlePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(context),
       body: _buildBody(),
     );
   }
 
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(BuildContext context) {
     return AppBar(
       title: const Text(
         'Daily News',
@@ -22,6 +23,15 @@ class ArticlePage extends StatelessWidget {
           color: Colors.black,
         ),
       ),
+      actions: [
+        GestureDetector(
+          onTap: () => _onShowSavedArticlesViewTapped(context),
+          child: const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 14),
+            child: Icon(Icons.bookmark, color: Colors.black),
+          ),
+        ),
+      ],
     );
   }
 
@@ -40,6 +50,8 @@ class ArticlePage extends StatelessWidget {
             itemBuilder: (context, int index) {
               return ArticleWidget(
                 article: state.articles?[index],
+                onArticlePressed: (article) =>
+                    _onArticlePressed(context, article),
               );
             },
           );
@@ -47,5 +59,13 @@ class ArticlePage extends StatelessWidget {
         return const SizedBox.shrink();
       },
     );
+  }
+
+  void _onArticlePressed(BuildContext context, ArticleEntity article) {
+    Navigator.pushNamed(context, '/ArticleDetails', arguments: article);
+  }
+
+  void _onShowSavedArticlesViewTapped(BuildContext context) {
+    Navigator.pushNamed(context, '/SavedArticles');
   }
 }
